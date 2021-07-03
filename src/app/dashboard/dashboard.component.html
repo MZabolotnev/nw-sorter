@@ -1,5 +1,9 @@
-<div class="row m-0 p-2">
-  <app-controller></app-controller>
+<div class="controller row m-0 p-2" *ngIf="controller$ | async as controller">
+  <app-controller-folder
+    class="col-4 p-0"
+    [folderPath]="controller.folderPath"
+    (update)="updateFolderPath($event)"
+  ></app-controller-folder>
 </div>
 <div class="row m-0 p-2">
   <app-file-list></app-file-list>

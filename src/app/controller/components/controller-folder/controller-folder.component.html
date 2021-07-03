@@ -1,0 +1,17 @@
+<div class="controller-folder col p-2">
+  <div class="input-group mb-3 col">
+    <div class="custom-file">
+      <input
+        id="controllerFolderInput"
+        type="file"
+        class="controller-folder-input"
+        nwdirectory
+        nwdirectorydesc="Select folder"
+        (change)="changeFolder($event)"
+      />
+      <label class="custom-file-label" for="controllerFolderInput"
+        >{{folderPath || 'Choose folder'}}</label
+      >
+    </div>
+  </div>
+</div>

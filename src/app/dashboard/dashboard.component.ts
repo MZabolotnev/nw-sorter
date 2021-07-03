@@ -9,12 +9,15 @@ import { ControllerService } from '../controller/store/controller.service';
   styleUrls: ['./dashboard.component.less'],
 })
 export class DashboardComponent implements OnInit {
-  controller$: Observable<fromController.State> = this.controllerService.controller$;
+  controller$: Observable<fromController.State>;
 
   constructor(private controllerService: ControllerService) {}
 
   ngOnInit(): void {
-    this.controller$.subscribe(controller => {
-      console.log(controller);})
+    this.controller$ = this.controllerService.controller$;
+  }
+
+  updateFolderPath(folderPath: string) {
+    this.controllerService.updateFolderPathAction(folderPath);
   }
 }

@@ -10,7 +10,7 @@ import {
 
 export interface State {
   folderPath: string,
-  filenames: string[],
+  filenames: string,
   selectAll: boolean,
   convertFolderName: string,
   sortFolderName: string,
@@ -21,7 +21,7 @@ export interface State {
 export function getInitialState(): State {
   return {
     folderPath: '',
-    filenames: [],
+    filenames: '',
     selectAll: false,
     convertFolderName: 'converted',
     sortFolderName: 'sorted',

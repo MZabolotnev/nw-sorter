@@ -21,7 +21,7 @@ export class ControllerService {
   updateFolderPathAction(folderPath: string) {
     this.store.dispatch(controllerActions.updateFolderPath({ folderPath }));
   }
-  updateFilenamesAction(filenames: []) {
+  updateFilenamesAction(filenames: string) {
     this.store.dispatch(controllerActions.updateFilenames({ filenames }));
   }
   updateSelectAllAction(selectAll: boolean) {
