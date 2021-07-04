@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-controller-folder',
@@ -17,14 +18,18 @@ export class ControllerFolderComponent implements OnInit {
   @Output() update: EventEmitter<string> = new EventEmitter();
 
   currentFolderPath: string;
-  constructor() {}
+  constructor(public notificationService: NotificationService) {}
 
   ngOnInit(): void {
-
+    this.notificationService.error({
+      title: 'Test',
+      message: 'Notification',
+    });
   }
 
   changeFolder(event: Event | null) {
     const target = event?.target as any;
+
     this.update.emit(target.value);
   }
 }
