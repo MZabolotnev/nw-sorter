@@ -17,16 +17,6 @@ export class NotificationService {
     return this.toastr.success(message, title, this.getOptions(options));
   }
 
-  warning(options: INotification): ActiveToast<any> {
-    const { title, message } = options;
-    return this.toastr.warning(message, title, this.getOptions(options));
-  }
-
-  info(options: INotification): ActiveToast<any> {
-    const { title, message } = options;
-    return this.toastr.info(message, title, this.getOptions(options));
-  }
-
   error(options: INotification): ActiveToast<any> {
     const { title, message } = options;
     return this.toastr.error(message, title, this.getOptions(options));

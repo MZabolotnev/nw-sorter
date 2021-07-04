@@ -1,9 +1,19 @@
 <div class="controller row m-0 p-2" *ngIf="controller$ | async as controller">
   <app-controller-folder
-    class="col-4 p-0"
+    class="col-3 p-0"
     [folderPath]="controller.folderPath"
     (update)="updateFolderPath($event)"
   ></app-controller-folder>
+  <div class="col-3 p-0 d-flex flex-column">
+    <app-controller-checkbox
+      class="col"
+      [checked]="controller.selectAll"
+      [text]="'Select all'"
+      (update)="updateSelectAll($event)"
+
+    ></app-controller-checkbox>
+    <app-controller-textarea class="col"></app-controller-textarea>
+  </div>
 </div>
 <div class="row m-0 p-2">
   <app-file-list></app-file-list>

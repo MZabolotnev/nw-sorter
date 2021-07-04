@@ -51,8 +51,8 @@
   "main": "http://localhost:8964",
   "node-remote": "http://localhost:8964",
   "window": {
-    "width": 960,
-    "height": 600,
+    "width": 1200,
+    "height": 900,
     "min_width": 700,
     "min_height": 500,
     "icon": "your-app-logo.png"

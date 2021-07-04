@@ -20,4 +20,7 @@ export class DashboardComponent implements OnInit {
   updateFolderPath(folderPath: string) {
     this.controllerService.updateFolderPathAction(folderPath);
   }
+  updateSelectAll(selectAll: boolean) {
+    this.controllerService.updateSelectAllAction(selectAll);
+  }
 }

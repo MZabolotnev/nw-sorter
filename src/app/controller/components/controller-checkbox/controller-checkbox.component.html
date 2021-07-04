@@ -1,1 +1,6 @@
-<p>controller-checkbox works!</p>
+<div class="form-check">
+  <input (change)="change($event)" class="form-check-input" type="checkbox" value="" id="controller-checkbox-{{text}}">
+  <label class="form-check-label" for="controller-checkbox-{{text}}">
+    {{text}}
+  </label>
+</div>
