@@ -1,15 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToastrModule } from 'ngx-toastr';
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-
-
+import { AddTimestampPipe } from './pipes/add-timestamp.pipe';
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-
+  declarations: [AddTimestampPipe],
+  imports: [CommonModule],
+  exports: [
+    AddTimestampPipe
   ]
 })
-export class SharedModule { }
+export class SharedModule {}

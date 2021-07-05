@@ -1,0 +1,15 @@
+<div class="input-group mb-3">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="{{ value }}"
+    [disabled]="disabled"
+    (change)="change($event)"
+  />
+  <div class="input-group-append">
+    <span class="input-group-text">{{ text }}</span>
+  </div>
+  <div class="controller-input example pt-2">
+    Example: {{value | addTimestamp}}
+  </div>
+</div>

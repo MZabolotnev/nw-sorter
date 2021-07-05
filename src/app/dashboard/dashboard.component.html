@@ -1,7 +1,10 @@
-<div class="dashboard d-flex w-100 h-100 flex-row mt-2">
-  <div class="controller col-4 m-0 p-2 d-flex flex-column" *ngIf="controller$ | async as controller">
+<div class="dashboard d-flex w-100 h-100 flex-row">
+  <div
+    class="controller col-4 p-2 d-flex flex-column"
+    *ngIf="controller$ | async as controller"
+  >
     <app-controller-folder
-      class="col-auto p-0"
+      class="col-auto p-0 pt-2"
       [folderPath]="controller.folderPath"
       (update)="updateFolderPath($event)"
     ></app-controller-folder>
@@ -11,18 +14,53 @@
         [checked]="controller.selectAll"
         [text]="'Select all'"
         (update)="updateSelectAll($event)"
-
       ></app-controller-checkbox>
       <app-controller-textarea
         [value]="controller.filenames"
         [disabled]="controller.selectAll"
         [text]="'Enter filenames'"
         (update)="updateFilenames($event)"
-        class="col-auto pt-2"></app-controller-textarea>
+        class="col-auto pt-2"
+      ></app-controller-textarea>
     </div>
+
+    <div class="col-auto p-2 d-flex flex-column">
+      <app-controller-checkbox
+        class="col"
+        [checked]="controller.isSort"
+        [text]="'Sort'"
+        (update)="updateIsSort($event)"
+      ></app-controller-checkbox>
+      <app-controller-input
+        [value]="controller.sortFolderName"
+        [disabled]="!controller.isSort"
+        [text]="'Folder name'"
+        (update)="updateSortFolderName($event)"
+        class="col-auto pt-2"
+      ></app-controller-input>
+    </div>
+
+    <div class="col-auto p-2 d-flex flex-column">
+      <app-controller-checkbox
+        class="col"
+        [checked]="controller.isConvert"
+        [text]="'Convert'"
+        (update)="updateIsConvert($event)"
+      ></app-controller-checkbox>
+      <app-controller-input
+        [value]="controller.convertFolderName"
+        [disabled]="!controller.isConvert"
+        [text]="'Folder name'"
+        (update)="updateConvertFolderName($event)"
+        class="col-auto pt-2"
+      ></app-controller-input>
+    </div>
+
+    <button type="button" class="btn btn-primary" [disabled]="isProcessDisabled(controller)" (click)="applyController()">
+      Process
+    </button>
   </div>
-  <div class=" m-0 p-2">
+  <div class="m-0 p-2">
     <app-file-list></app-file-list>
   </div>
-
 </div>
