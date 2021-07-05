@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NOTIFICATIONS } from '../../../shared/constants/notifications';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {NOTIFICATIONS} from "../../../shared/constants/notifications";
 
 @Component({
   selector: 'app-controller-checkbox',
   templateUrl: './controller-checkbox.component.html',
-  styleUrls: ['./controller-checkbox.component.less'],
+  styleUrls: ['./controller-checkbox.component.less']
 })
 export class ControllerCheckboxComponent implements OnInit {
   @Input()
@@ -21,14 +21,17 @@ export class ControllerCheckboxComponent implements OnInit {
 
   @Output() update: EventEmitter<boolean> = new EventEmitter();
 
-  currentChecked: boolean;
 
-  constructor() {}
+  currentChecked: boolean
 
-  ngOnInit(): void {}
+  constructor() { }
+
+  ngOnInit(): void {
+  }
 
   change(event: Event | null) {
     const target = event?.target as any;
     this.update.emit(target.checked);
   }
+
 }

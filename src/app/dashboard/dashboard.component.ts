@@ -23,4 +23,7 @@ export class DashboardComponent implements OnInit {
   updateSelectAll(selectAll: boolean) {
     this.controllerService.updateSelectAllAction(selectAll);
   }
+  updateFilenames(filenames: string) {
+    this.controllerService.updateFilenamesAction(filenames);
+  }
 }

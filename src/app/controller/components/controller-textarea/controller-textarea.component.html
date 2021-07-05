@@ -1,1 +1,12 @@
-<p>controller-textarea works!</p>
+<div class="input-group">
+  <textarea
+    [value]="value"
+    (change)="change($event)"
+    [disabled]="disabled"
+    class="form-control"
+    aria-label="With textarea"
+  ></textarea>
+  <div class="input-group-append">
+    <span class="input-group-text">{{ text }}</span>
+  </div>
+</div>
