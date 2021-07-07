@@ -8,4 +8,3 @@ export const updateSortFolderName = createAction('[Controller] Update sort folde
 export const updateIsSort = createAction('[Controller] Update is sort option', props<{ isSort: boolean }>());
 export const updateIsConvert = createAction('[Controller] Update is convert option', props<{ isConvert: boolean }>());
 export const applyController = createAction('[Controller] Applying controller');
-export const applyControllerSuccess = createAction('[Controller] Applying controller Success ');

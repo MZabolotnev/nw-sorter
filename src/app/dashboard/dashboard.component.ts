@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as fromController from '../controller/store/controller.reducer';
+import * as fromFileList from '../file-list/store/file-list.reducer';
 import { ControllerService } from '../controller/store/controller.service';
+import { FileListService } from '../file-list/store/file-list.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,11 +12,13 @@ import { ControllerService } from '../controller/store/controller.service';
 })
 export class DashboardComponent implements OnInit {
   controller$: Observable<fromController.State>;
+  fileList$: Observable<fromFileList.State>;
 
-  constructor(private controllerService: ControllerService) {}
+  constructor(private controllerService: ControllerService, private fileListService: FileListService) {}
 
   ngOnInit(): void {
     this.controller$ = this.controllerService.controller$;
+    this.fileList$ = this.fileListService.fileList$;
   }
 
   updateFolderPath(folderPath: string) {
@@ -51,7 +55,7 @@ export class DashboardComponent implements OnInit {
     return (
       !controller.filenames ||
       !controller.folderPath ||
-      (!controller.isSort || !controller.isConvert)
+      (!controller.isSort && !controller.isConvert)
     );
   }
 }

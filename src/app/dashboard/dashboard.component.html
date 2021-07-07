@@ -55,12 +55,25 @@
         class="col-auto pt-2"
       ></app-controller-input>
     </div>
-
-    <button type="button" class="btn btn-primary" [disabled]="isProcessDisabled(controller)" (click)="applyController()">
+    <button
+      type="button"
+      class="btn btn-primary ml-4 mr-4"
+      [disabled]="isProcessDisabled(controller)"
+      (click)="applyController()"
+    >
       Process
     </button>
+
+
   </div>
   <div class="m-0 p-2">
     <app-file-list></app-file-list>
+  </div>
+  <div
+    *ngIf="(fileList$ | async)?.loading"
+    class="loading-overlay d-flex align-items-center justify-content-center"
+  >
+    <div class="spinner-border text-primary" role="status"></div>
+    <div class="pl-2">Loading...</div>
   </div>
 </div>

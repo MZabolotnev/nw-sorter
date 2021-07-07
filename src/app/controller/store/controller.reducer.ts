@@ -1,21 +1,14 @@
 import * as controllerActions from './controller.actions';
-import {
-  createFeatureSelector,
-  createReducer,
-  on,
-  Action,
-  ActionReducer,
-  createSelector,
-} from '@ngrx/store';
+import { createFeatureSelector, createReducer, on, Action } from '@ngrx/store';
 
 export interface State {
-  folderPath: string,
-  filenames: string,
-  selectAll: boolean,
-  convertFolderName: string,
-  sortFolderName: string,
-  isSort: boolean,
-  isConvert: boolean,
+  folderPath: string;
+  filenames: string;
+  selectAll: boolean;
+  convertFolderName: string;
+  sortFolderName: string;
+  isSort: boolean;
+  isConvert: boolean;
 }
 
 export function getInitialState(): State {
@@ -27,7 +20,7 @@ export function getInitialState(): State {
     sortFolderName: 'sorted',
     isSort: true,
     isConvert: false,
-  }
+  };
 }
 
 export const controllerReducer = createReducer(
@@ -44,10 +37,13 @@ export const controllerReducer = createReducer(
     ...state,
     selectAll,
   })),
-  on(controllerActions.updateConvertFolderName, (state, { convertFolderName }) => ({
-    ...state,
-    convertFolderName,
-  })),
+  on(
+    controllerActions.updateConvertFolderName,
+    (state, { convertFolderName }) => ({
+      ...state,
+      convertFolderName,
+    })
+  ),
   on(controllerActions.updateSortFolderName, (state, { sortFolderName }) => ({
     ...state,
     sortFolderName,
@@ -60,12 +56,14 @@ export const controllerReducer = createReducer(
     ...state,
     isConvert,
   })),
+  on(controllerActions.applyController, (state) => ({
+    ...state,
+    loading: true,
+  }))
 );
 
 export function reducer(state: State | undefined, action: Action) {
   return controllerReducer(state, action);
 }
 
-
 export const getState = createFeatureSelector<State>('controller');
-
