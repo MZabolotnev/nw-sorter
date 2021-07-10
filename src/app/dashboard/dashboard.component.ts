@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { Observable } from 'rxjs';
 import * as fromController from '../controller/store/controller.reducer';
 import * as fromFileList from '../file-list/store/file-list.reducer';
@@ -9,16 +9,23 @@ import { FileListService } from '../file-list/store/file-list.service';
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit {
   controller$: Observable<fromController.State>;
   fileList$: Observable<fromFileList.State>;
-
-  constructor(private controllerService: ControllerService, private fileListService: FileListService) {}
+  loading =  false;
+  constructor(private controllerService: ControllerService, private fileListService: FileListService, private changeDetection: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.controller$ = this.controllerService.controller$;
     this.fileList$ = this.fileListService.fileList$;
+    this.fileList$.subscribe(fl => {
+      this.loading = fl.loading
+      this.changeDetection.detectChanges();
+
+    })
+
   }
 
   updateFolderPath(folderPath: string) {

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NotificationService } from './notification.service';
 import { NOTIFICATIONS } from '../constants/notifications';
-import {of, from, defer, timer, Observable} from 'rxjs';
-
+import { of, from, defer, timer, Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -25,37 +24,36 @@ export class FileSystemService {
     return false;
   }
 
-  resolveAfter5Seconds(): Promise<string[]> {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(['test']);
-      }, 5000);
+  searchFiles(path: string, rawString: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.fs.readdir(path, (err: Error, files: any) => {
+        if (err) return reject(err);
+        const fileNames = files.map((file: string) => file);
+        const rawFileNames = rawString
+          .replace(/[^0-9]/g, ' ')
+          .trim()
+          .split(/ +/g)
+          .filter((el) => el.length > 0);
+
+        if (rawFileNames.length === 0) {
+          reject(NOTIFICATIONS.ERROR.PARSE_STR.MESSAGE);
+        }
+
+        const targetFilenames = rawFileNames.reduce((acc: string[], curr) => {
+          const target = fileNames.find((element: string) =>
+            element.includes(curr)
+          );
+          if (target) {
+            acc.push(target);
+          }
+          return acc;
+        }, []);
+
+        if (targetFilenames.length) {
+          resolve(targetFilenames);
+        }
+        reject(NOTIFICATIONS.ERROR.NO_FILES.MESSAGE);
+      });
     });
-  }
-
-   findFiles$(path: string, rawString: string): Observable<string[]>  {
-     return  this.fs.promise.readdir('dssdfs');
-
-     // try {
-    //   const fileNames = rawString.replace(/[^0-9]/g, ' ').trim().split(/ +/g);
-    //
-    //   // this.fs.readdir(path,  (err, items) => {
-    //   //   for (let i=0; i<items.length; i++) {
-    //   //     if (items[i].indexOf(name) !== -1) {
-    //   //       console.log(items[i]);
-    //   //     }
-    //   //   }
-    //   // });
-    //
-    //   // return  from(this.resolveAfter5Seconds());
-    //   return  this.fs.promise.readdir('dssdfs');
-    //
-    // } catch (error) {
-    //   this.notificationService.error({
-    //     title: NOTIFICATIONS.ERROR.READ_FOLDER.TITLE,
-    //     message: error,
-    //   });
-    // }
-    // throw new Error();
   }
 }

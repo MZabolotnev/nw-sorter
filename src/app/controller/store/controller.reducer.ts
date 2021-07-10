@@ -14,7 +14,7 @@ export interface State {
 export function getInitialState(): State {
   return {
     folderPath: '',
-    filenames: '',
+    filenames: '01736, ёёёёЁЁЁЁ/////01737, свс01740,ывмывм01749.       01741.     , ,,,,,,      DSC1750',
     selectAll: false,
     convertFolderName: 'converted',
     sortFolderName: 'sorted',

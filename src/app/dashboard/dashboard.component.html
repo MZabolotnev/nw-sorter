@@ -63,17 +63,16 @@
     >
       Process
     </button>
-
-
   </div>
-  <div class="m-0 p-2">
-    <app-file-list></app-file-list>
+  <div class="m-0 p-2" *ngIf="fileList$ | async as fileList">
+    <app-file-list [files]="fileList.files"></app-file-list>
   </div>
   <div
-    *ngIf="(fileList$ | async)?.loading"
+    *ngIf="(fileList$ | async).loading"
     class="loading-overlay d-flex align-items-center justify-content-center"
   >
     <div class="spinner-border text-primary" role="status"></div>
     <div class="pl-2">Loading...</div>
   </div>
 </div>
+

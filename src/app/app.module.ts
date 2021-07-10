@@ -4,17 +4,17 @@ import { reducers, metaReducers } from './app.store';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {DashboardModule} from "./dashboard/dashboard.module";
+import { DashboardModule } from './dashboard/dashboard.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {ToastrModule} from "ngx-toastr";
+import { ToastrModule } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-  declarations: [
-    AppComponent,],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -32,8 +32,9 @@ import {ToastrModule} from "ngx-toastr";
     BrowserAnimationsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    CommonModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
