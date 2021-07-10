@@ -4,6 +4,7 @@ import * as fileListActions from './file-list.actions';
 import { Observable, combineLatest } from 'rxjs';
 import * as fromFileList from './file-list.reducer';
 import { StoreModel } from '../../app.store';
+import {IFile} from "../interfaces/file-list.interface";
 
 @Injectable({
   providedIn: 'root',
@@ -15,11 +16,8 @@ export class FileListService {
     return this.store.select(fromFileList.getState);
   }
 
-  updateFiles(files: string[]) {
+  updateFiles(files: IFile[]) {
     this.store.dispatch(fileListActions.updateFiles());
-  }
-  updatePreviews(previews: string[]) {
-    this.store.dispatch(fileListActions.updatePreviews({ previews }));
   }
 
   applyFileList() {

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import {IFile} from "../../interfaces/file-list.interface";
 
 @Component({
   selector: 'app-file-list',
@@ -7,14 +8,14 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class FileListComponent implements OnInit {
   @Input()
-  set files(files: string[]) {
+  set files(files: IFile[]) {
     this.currentFiles= files;
   }
-  get files(): string[] {
+  get files(): IFile[] {
     return this.currentFiles;
   }
 
-  currentFiles: string[];
+  currentFiles: IFile[];
 
   constructor() {}
 

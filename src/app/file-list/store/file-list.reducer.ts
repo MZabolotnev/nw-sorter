@@ -7,17 +7,16 @@ import {
   ActionReducer,
   createSelector,
 } from '@ngrx/store';
+import {IFile} from "../interfaces/file-list.interface";
 
 export interface State {
-  files: string[];
-  previews: string[];
+  files: IFile[];
   loading: boolean;
 }
 
 export function getInitialState(): State {
   return {
     files: [],
-    previews: [],
     loading: false,
   };
 }
@@ -37,10 +36,6 @@ export const fileListReducer = createReducer(
     ...state,
     loading: false,
   })),
-  on(fileListActions.updatePreviews, (state, { previews }) => ({
-    ...state,
-    previews,
-  }))
 );
 
 export function reducer(state: State | undefined, action: Action) {

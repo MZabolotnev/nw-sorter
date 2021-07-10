@@ -1,7 +1,7 @@
 Current files :
 
-<ul>
+<ul *ngIf="files.length">
   <div *ngFor="let file of files">
-    {{file}}
+    <img [src]="file.preview" alt="">
   </div>
 </ul>
