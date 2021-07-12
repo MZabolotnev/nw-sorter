@@ -3,7 +3,9 @@ import { NotificationService } from './notification.service';
 import { NOTIFICATIONS } from '../constants/notifications';
 import { of, from, defer, timer, Observable, throwError } from 'rxjs';
 import { IFile } from '../../file-list/interfaces/file-list.interface';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import * as buffer from 'buffer';
+import {DEFAULT_APP_OPTIONS} from "../constants/constants";
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +48,6 @@ export class FileSystemService {
     if (rawFileNames.length === 0) {
       throw Error(NOTIFICATIONS.ERROR.PARSE_STR.MESSAGE);
     }
-
     const targetFilenames = rawFileNames.reduce((acc: string[], curr) => {
       const target = fileNames.find((element: string) =>
         element.includes(curr)
@@ -67,18 +68,8 @@ export class FileSystemService {
     const output: IFile[] = [];
     for (const file of files) {
       const buf = await this.fsPromises.readFile(`${folderPath}/${file}`);
-      const tiffFile = this.dcraw(buf, { extractThumbnail: true });
-      const sharpImg = await this.sharp(tiffFile)
-        .resize(300)
-        .jpeg({ mozjpeg: true })
-        .toBuffer();
-      const STRING_CHAR = sharpImg.reduce((data: any, byte: any) => {
-        return data + String.fromCharCode(byte);
-      }, '');
-      const base64String = btoa(STRING_CHAR);
-      const preview = this.sanitizer.bypassSecurityTrustUrl(
-        `data:image/jpg;base64, ` + base64String
-      );
+      const sharpImg = await this.bufImgResize(buf, DEFAULT_APP_OPTIONS.DEFAULT_PREVIEW_SIZE_PX);
+      const preview = await this.bufToUrl(sharpImg);
 
       output.push({
         name: file,
@@ -87,4 +78,29 @@ export class FileSystemService {
     }
     return output;
   }
+
+  async bufImgResize(buf: ArrayBuffer, height: number): Promise<ArrayBuffer> {
+    const tiffFile = this.dcraw(buf, { extractThumbnail: true });
+    return await this.sharp(tiffFile)
+      .resize(height)
+      .jpeg({ mozjpeg: true })
+      .toBuffer();
+  }
+
+  async bufToUrl(buf: ArrayBuffer): Promise<SafeUrl> {
+    const sharpImg = await this.sharp(buf).jpeg({ mozjpeg: true }).toBuffer();
+    const stringChar = sharpImg.reduce((data: any, byte: any) => {
+      return data + String.fromCharCode(byte);
+    }, '');
+    const base64String = btoa(stringChar);
+    return this.sanitizer.bypassSecurityTrustUrl(
+      `data:image/jpg;base64, ` + base64String
+    );
+  }
+
+  async processFiles(): Promise<boolean> {
+    return true
+  }
+
+
 }

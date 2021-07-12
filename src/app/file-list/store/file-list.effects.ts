@@ -44,4 +44,35 @@ export class FileListEffects {
       )
     )
   );
+
+
+
+
+  applyFileList$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(fileListActions.applyFiles),
+      withLatestFrom(this.controllerService.controller$, this.fileListService.fileList$),
+      switchMap(([action, controller, fileList]) =>
+        from(
+          this.fileSystemService.processFiles(
+
+          )
+        ).pipe(
+          map((success) => {
+            console.log('APPLY FILES ACTION')
+            return fileListActions.applyFilesSuccess();
+          }),
+          catchError((error: any) => {
+            this.notificationService.error({
+              title: '',
+              message: error,
+            });
+            return of(fileListActions.applyFilesFail());
+          })
+        )
+      )
+    )
+  );
+
+
 }

@@ -16,11 +16,11 @@ export class FileListService {
     return this.store.select(fromFileList.getState);
   }
 
-  updateFiles(files: IFile[]) {
-    this.store.dispatch(fileListActions.updateFiles());
+  updateConfirmedFiles(confirmedFiles: IFile[]) {
+    this.store.dispatch(fileListActions.updateConfirmedFiles({confirmedFiles}));
   }
 
-  applyFileList() {
-    this.store.dispatch(fileListActions.applyFileList());
+  applyFiles() {
+    this.store.dispatch(fileListActions.applyFiles());
   }
 }

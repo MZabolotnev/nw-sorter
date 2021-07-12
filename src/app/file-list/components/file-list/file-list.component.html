@@ -1,7 +1,17 @@
-Current files :
-
-<ul *ngIf="files.length">
-  <div *ngFor="let file of files">
-    <img [src]="file.preview" alt="">
+<div class="files-container col p-0 d-flex flex-column">
+  <div class="col-auto">Current files :</div>
+  <div class="tile-img-container col-auto d-flex flex-row">
+    <div
+      class="tile m-1"
+      *ngFor="let file of files; let i = index"
+      [ngClass]="{ 'tile-checked': getChecked(file) }"
+    >
+      <img [src]="file.preview" alt="" />
+      <app-file-controls
+        [checked]="getChecked(file)"
+        [name]="file.name"
+        (update)="updateConfirmedFiles($event)"
+      ></app-file-controls>
+    </div>
   </div>
-</ul>
+</div>

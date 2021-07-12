@@ -1,5 +1,6 @@
 import * as controllerActions from './controller.actions';
 import { createFeatureSelector, createReducer, on, Action } from '@ngrx/store';
+import { DEFAULT_APP_OPTIONS } from '../../shared/constants/constants';
 
 export interface State {
   folderPath: string;
@@ -13,11 +14,12 @@ export interface State {
 
 export function getInitialState(): State {
   return {
-    folderPath: '',
-    filenames: '01736, ёёёёЁЁЁЁ/////01737, свс01740,ывмывм01749.       01741.     , ,,,,,,      DSC1750',
+    folderPath: '/Users/mzabolotnev-moc/work/TEST_RAW',
+    filenames:
+      '01736, ёёёёЁЁЁЁ/////01737, свс01740,ывмывм01749.       01741.     , ,,,,,,      DSC1750',
     selectAll: false,
-    convertFolderName: 'converted',
-    sortFolderName: 'sorted',
+    convertFolderName: DEFAULT_APP_OPTIONS.DEFAULT_CONVERT_FOLDER_PREFIX,
+    sortFolderName: DEFAULT_APP_OPTIONS.DEFAULT_SORT_FOLDER_PREFIX,
     isSort: true,
     isConvert: false,
   };
@@ -56,9 +58,11 @@ export const controllerReducer = createReducer(
     ...state,
     isConvert,
   })),
-  on(controllerActions.applyController, (state) => ({
+  on(controllerActions.applyProcess, (state) => ({
     ...state,
-    loading: true,
+  })),
+  on(controllerActions.applyFiles, (state) => ({
+    ...state,
   }))
 );
 

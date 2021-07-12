@@ -5,11 +5,12 @@ import {EffectsModule} from "@ngrx/effects";
 import {FileListEffects} from "./store/file-list.effects";
 import {StoreModule} from "@ngrx/store";
 import * as fromFileList from "./store/file-list.reducer";
+import {FileControlsComponent} from "./components/file-controls/file-controls.component";
 
 
 
 @NgModule({
-  declarations: [FileListComponent],
+  declarations: [FileListComponent, FileControlsComponent],
   imports: [
     CommonModule,
     StoreModule.forFeature('fileList', fromFileList.reducer, {

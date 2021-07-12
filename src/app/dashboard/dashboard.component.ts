@@ -1,4 +1,9 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import * as fromController from '../controller/store/controller.reducer';
 import * as fromFileList from '../file-list/store/file-list.reducer';
@@ -14,18 +19,20 @@ import { FileListService } from '../file-list/store/file-list.service';
 export class DashboardComponent implements OnInit {
   controller$: Observable<fromController.State>;
   fileList$: Observable<fromFileList.State>;
-  loading =  false;
-  constructor(private controllerService: ControllerService, private fileListService: FileListService, private changeDetection: ChangeDetectorRef) {}
+  loading = false;
+  constructor(
+    private controllerService: ControllerService,
+    private fileListService: FileListService,
+    private changeDetection: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.controller$ = this.controllerService.controller$;
     this.fileList$ = this.fileListService.fileList$;
-    this.fileList$.subscribe(fl => {
-      this.loading = fl.loading
+    this.fileList$.subscribe((fl) => {
+      this.loading = fl.loading;
       this.changeDetection.detectChanges();
-
-    })
-
+    });
   }
 
   updateFolderPath(folderPath: string) {
@@ -54,15 +61,37 @@ export class DashboardComponent implements OnInit {
     this.controllerService.updateIsConvertAction(isConvert);
   }
 
-  applyController() {
-    this.controllerService.applyControllerAction();
+  applyProcess() {
+    this.controllerService.applyProcessAction();
   }
 
-  isProcessDisabled(controller: fromController.State):boolean {
+  applyFiles() {
+    this.controllerService.applyFiles();
+  }
+
+  isProcessDisabled(controller: fromController.State): boolean {
     return (
       !controller.filenames ||
       !controller.folderPath ||
       (!controller.isSort && !controller.isConvert)
     );
+  }
+
+  getApplyFilesButtonText(controller: fromController.State): string {
+    const nothingSelectedText = '↑ select one of options';
+    const sortText = 'Sort';
+    const convertText = 'convert';
+    const isBothOptions = controller.isSort && controller.isConvert;
+    const isNothingSelected = !controller.isSort && !controller.isConvert;
+    if (isNothingSelected) {
+      return nothingSelectedText;
+    }
+    const isConvertText = isBothOptions
+      ? convertText
+      : convertText[0].toUpperCase() + convertText.substring(1);
+
+    return `${controller.isSort ? sortText : ''}${
+      isBothOptions ? ' and ' : ''
+    }${controller.isConvert ? isConvertText : ''}`;
   }
 }

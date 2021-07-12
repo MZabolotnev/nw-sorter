@@ -14,10 +14,20 @@ export class ControllerEffects {
 
   applyController$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(controllerActions.applyController),
+      ofType(controllerActions.applyProcess),
       withLatestFrom(this.controllerService.controller$),
       switchMap(([action, controller]) => {
         return [fileListActions.updateFiles()];
+      })
+    )
+  );
+
+  applyFileList$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(controllerActions.applyFiles),
+      withLatestFrom(this.controllerService.controller$),
+      switchMap(([action, controller]) => {
+        return [fileListActions.applyFiles()];
       })
     )
   );

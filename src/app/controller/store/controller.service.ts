@@ -39,8 +39,11 @@ export class ControllerService {
   updateIsConvertAction(isConvert: boolean) {
     this.store.dispatch(controllerActions.updateIsConvert({ isConvert }));
   }
-  applyControllerAction() {
-    this.store.dispatch(controllerActions.applyController());
+  applyProcessAction() {
+    this.store.dispatch(controllerActions.applyProcess());
+  }
+  applyFiles() {
+    this.store.dispatch(controllerActions.applyFiles());
   }
 
 }

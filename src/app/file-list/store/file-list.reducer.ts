@@ -7,16 +7,18 @@ import {
   ActionReducer,
   createSelector,
 } from '@ngrx/store';
-import {IFile} from "../interfaces/file-list.interface";
+import { IFile } from '../interfaces/file-list.interface';
 
 export interface State {
   files: IFile[];
+  confirmedFiles: IFile[];
   loading: boolean;
 }
 
 export function getInitialState(): State {
   return {
     files: [],
+    confirmedFiles: [],
     loading: false,
   };
 }
@@ -27,15 +29,20 @@ export const fileListReducer = createReducer(
     ...state,
     loading: true,
   })),
+  on(fileListActions.updateConfirmedFiles, (state, { confirmedFiles }) => ({
+    ...state,
+    confirmedFiles,
+  })),
   on(fileListActions.updateFilesSuccess, (state, { files }) => ({
     ...state,
-    loading: false,
     files,
+    confirmedFiles: [...files],
+    loading: false,
   })),
   on(fileListActions.updateFilesFail, (state) => ({
     ...state,
     loading: false,
-  })),
+  }))
 );
 
 export function reducer(state: State | undefined, action: Action) {
