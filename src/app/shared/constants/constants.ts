@@ -12,3 +12,6 @@ export const DEFAULT_NOTIFICATION_OPTIONS = {
   progressBar: true,
   toastClass: 'ngx-toastr'
 }
+
+export const SORT_LOADING_TEXT = 'Sorting'
+export const CONVERT_LOADING_TEXT = 'Converting'

@@ -8,11 +8,14 @@ import {
   createSelector,
 } from '@ngrx/store';
 import { IFile } from '../interfaces/file-list.interface';
+import { ILoadingValue } from '../../shared/interfaces/interface';
 
 export interface State {
   files: IFile[];
   confirmedFiles: IFile[];
   loading: boolean;
+  loadingValue: ILoadingValue;
+  loadingText: string;
 }
 
 export function getInitialState(): State {
@@ -20,6 +23,11 @@ export function getInitialState(): State {
     files: [],
     confirmedFiles: [],
     loading: false,
+    loadingValue: {
+      total: 100,
+      current: 10
+    },
+    loadingText: 'Converting',
   };
 }
 
@@ -39,9 +47,33 @@ export const fileListReducer = createReducer(
     confirmedFiles: [...files],
     loading: false,
   })),
+  on(fileListActions.updateLoadingValue, (state, { loadingValue }) => ({
+    ...state,
+    loadingValue,
+  })),
+  on(fileListActions.updateLoadingText, (state, { loadingText }) => ({
+    ...state,
+    loadingText,
+  })),
   on(fileListActions.updateFilesFail, (state) => ({
     ...state,
     loading: false,
+  })),
+  on(fileListActions.applyFiles, (state) => ({
+    ...state,
+    loading: true,
+  })),
+  on(fileListActions.applyFilesSuccess, (state) => ({
+    ...state,
+    loading: false,
+    loadingValue: null,
+    loadingText: '',
+  })),
+  on(fileListActions.applyFilesFail, (state) => ({
+    ...state,
+    loading: false,
+    loadingValue: null,
+    loadingText: '',
   }))
 );
 

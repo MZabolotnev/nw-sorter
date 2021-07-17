@@ -27,7 +27,8 @@ export class FileListEffects {
         from(
           this.fileSystemService.searchFiles(
             controller.folderPath,
-            controller.filenames
+            controller.filenames,
+            controller.selectAll,
           )
         ).pipe(
           map((files) => {
@@ -45,26 +46,30 @@ export class FileListEffects {
     )
   );
 
-
-
-
   applyFileList$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fileListActions.applyFiles),
-      withLatestFrom(this.controllerService.controller$, this.fileListService.fileList$),
+      withLatestFrom(
+        this.controllerService.controller$,
+        this.fileListService.fileList$
+      ),
       switchMap(([action, controller, fileList]) =>
         from(
           this.fileSystemService.processFiles(
-
+            controller,
+            fileList.confirmedFiles
           )
         ).pipe(
           map((success) => {
-            console.log('APPLY FILES ACTION')
+            this.notificationService.success({
+              title: NOTIFICATIONS.SUCCESS.DONE.TITLE,
+              message: NOTIFICATIONS.SUCCESS.DONE.MESSAGE,
+            });
             return fileListActions.applyFilesSuccess();
           }),
           catchError((error: any) => {
             this.notificationService.error({
-              title: '',
+              title: NOTIFICATIONS.ERROR.PROCESS.TITLE,
               message: error,
             });
             return of(fileListActions.applyFilesFail());
@@ -73,6 +78,4 @@ export class FileListEffects {
       )
     )
   );
-
-
 }

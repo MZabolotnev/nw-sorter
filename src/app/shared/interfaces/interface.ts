@@ -4,3 +4,8 @@ export interface INotification {
   timeOut?: number;
   noTimeout?: boolean;
 }
+
+export interface ILoadingValue {
+  current: number;
+  total: number;
+}

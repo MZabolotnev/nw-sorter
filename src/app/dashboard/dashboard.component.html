@@ -86,7 +86,9 @@
     *ngIf="(fileList$ | async).loading"
     class="loading-overlay d-flex align-items-center justify-content-center"
   >
-    <div class="spinner-border text-primary" role="status"></div>
-    <div class="pl-2">Loading...</div>
+    <app-loading
+      [value]="(fileList$ | async).loadingValue"
+      [text]="(fileList$ | async).loadingText"
+    ></app-loading>
   </div>
 </div>

@@ -22,6 +22,11 @@ export class NotificationService {
     return this.toastr.error(message, title, this.getOptions(options));
   }
 
+  warning(options: INotification): ActiveToast<any> {
+    const { title, message } = options;
+    return this.toastr.warning(message, title, this.getOptions(options));
+  }
+
   getOptions(options: INotification): Partial<IndividualConfig> {
     const toastOptions = {
       ...DEFAULT_NOTIFICATION_OPTIONS, ...options
