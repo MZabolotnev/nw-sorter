@@ -1,14 +1,28 @@
 .files-container {
   .tile-img-container {
-    flex-wrap:  wrap;
+    flex-wrap: wrap;
     .tile {
       position: relative;
       max-height: 150px;
-      border: 2px solid transparent;
+      max-width: 160px;
+      min-width: 160px;
+      border: 2px solid #d9d9d9;
+      border-radius: 0.25rem;
+      overflow: hidden;
+    }
+    .file-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
+    svg {
+      height: 40px;
+      width: 40px;
+      fill: #d9d9d9;
     }
   }
   .tile-checked {
-    border: 2px solid #007bff!important;
+    border: 2px solid #007bff !important;
   }
 }

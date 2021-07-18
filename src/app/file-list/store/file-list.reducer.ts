@@ -25,7 +25,7 @@ export function getInitialState(): State {
     loading: false,
     loadingValue: {
       total: 100,
-      current: 10
+      current: 10,
     },
     loadingText: 'Converting',
   };
@@ -46,6 +46,8 @@ export const fileListReducer = createReducer(
     files,
     confirmedFiles: [...files],
     loading: false,
+    loadingValue: null,
+    loadingText: '',
   })),
   on(fileListActions.updateLoadingValue, (state, { loadingValue }) => ({
     ...state,
@@ -58,6 +60,8 @@ export const fileListReducer = createReducer(
   on(fileListActions.updateFilesFail, (state) => ({
     ...state,
     loading: false,
+    loadingValue: null,
+    loadingText: '',
   })),
   on(fileListActions.applyFiles, (state) => ({
     ...state,

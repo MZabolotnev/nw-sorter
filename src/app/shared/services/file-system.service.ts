@@ -7,7 +7,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import * as buffer from 'buffer';
 import {
   CONVERT_LOADING_TEXT,
-  DEFAULT_APP_OPTIONS,
+  DEFAULT_APP_OPTIONS, PROCESS_LOADING_TEXT,
   SORT_LOADING_TEXT,
 } from '../constants/constants';
 import { State } from '../../controller/store/controller.reducer';
@@ -51,6 +51,7 @@ export class FileSystemService {
     rawString: string,
     selectAll: boolean
   ): Promise<IFile[]> {
+    this.fileListService.updateLoadingText(PROCESS_LOADING_TEXT);
     const files = await this.fsPromises.readdir(path);
     const fileNames = files.map((file: string) => file);
     console.log(fileNames);
@@ -84,10 +85,14 @@ export class FileSystemService {
 
   async addPreviews(folderPath: string, files: string[]): Promise<IFile[]> {
     const output: IFile[] = [];
-    for (const file of files) {
+    for (const [index, value] of files.entries()) {
+      this.fileListService.updateLoadingValue({
+        current: index + 1,
+        total: files.length + 1,
+      });
       let preview;
       try {
-        const buf = await this.fsPromises.readFile(`${folderPath}/${file}`);
+        const buf = await this.fsPromises.readFile(`${folderPath}/${value}`);
         const sharpImg = await this.bufImgResize(
           buf,
           DEFAULT_APP_OPTIONS.DEFAULT_PREVIEW_SIZE_PX
@@ -95,14 +100,14 @@ export class FileSystemService {
         preview = await this.bufToUrl(sharpImg);
       } catch (err) {
         this.notificationService.warning({
-          title: `${NOTIFICATIONS.WARNING.PREVIEW.TITLE}${file}`,
+          title: `${NOTIFICATIONS.WARNING.PREVIEW.TITLE}${value}`,
           message: err,
         });
         preview = null;
       }
 
       output.push({
-        name: file,
+        name: value,
         preview,
       });
     }
@@ -142,7 +147,7 @@ export class FileSystemService {
       const convert = await this.fileWorker(
         folderPath,
         this.addTimestampPipe.transform(convertFolderName),
-        files,
+        files.filter(file => file.preview),
         this.convertFile.bind(this)
       );
     }

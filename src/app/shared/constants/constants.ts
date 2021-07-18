@@ -15,3 +15,4 @@ export const DEFAULT_NOTIFICATION_OPTIONS = {
 
 export const SORT_LOADING_TEXT = 'Sorting'
 export const CONVERT_LOADING_TEXT = 'Converting'
+export const PROCESS_LOADING_TEXT = 'Reading'
