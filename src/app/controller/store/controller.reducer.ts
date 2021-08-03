@@ -15,8 +15,7 @@ export interface State {
 export function getInitialState(): State {
   return {
     folderPath: '/Users/mzabolotnev-moc/work/TEST_RAW',
-    filenames:
-      '01736, ёёёёЁЁЁЁ/////01737, свс01740,ывмывм01749.       01741.     , ,,,,,,      DSC1750',
+    filenames: '01736, ёёёёЁЁЁЁ/////01737, свс01740,ывмывм01749.       01741.     , ,,,,,,      DSC1750\n',
     selectAll: false,
     convertFolderName: DEFAULT_APP_OPTIONS.DEFAULT_CONVERT_FOLDER_PREFIX,
     sortFolderName: DEFAULT_APP_OPTIONS.DEFAULT_SORT_FOLDER_PREFIX,

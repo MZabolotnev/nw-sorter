@@ -23,11 +23,8 @@ export function getInitialState(): State {
     files: [],
     confirmedFiles: [],
     loading: false,
-    loadingValue: {
-      total: 100,
-      current: 10,
-    },
-    loadingText: 'Converting',
+    loadingValue: null,
+    loadingText: '',
   };
 }
 

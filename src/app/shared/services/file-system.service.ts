@@ -7,7 +7,8 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import * as buffer from 'buffer';
 import {
   CONVERT_LOADING_TEXT,
-  DEFAULT_APP_OPTIONS, PROCESS_LOADING_TEXT,
+  DEFAULT_APP_OPTIONS,
+  PROCESS_LOADING_TEXT,
   SORT_LOADING_TEXT,
 } from '../constants/constants';
 import { State } from '../../controller/store/controller.reducer';
@@ -21,7 +22,7 @@ export class FileSystemService {
   fs: any;
   fsPromises: any;
   dcraw: any;
-  sharp: any;
+  jimp: any;
   constructor(
     public notificationService: NotificationService,
     public addTimestampPipe: AddTimestampPipe,
@@ -31,10 +32,11 @@ export class FileSystemService {
     this.fs = window.nw.require('fs');
     this.fsPromises = this.fs.promises;
     this.dcraw = window.nw.require('dcraw');
-    this.sharp = window.nw.require('sharp');
+    this.jimp = window.nw.require('jimp');
   }
 
   isFolderEmpty(path: string): boolean {
+    console.log(path);
     try {
       return this.fs.readdirSync(path).length === 0;
     } catch (error) {
@@ -54,7 +56,6 @@ export class FileSystemService {
     this.fileListService.updateLoadingText(PROCESS_LOADING_TEXT);
     const files = await this.fsPromises.readdir(path);
     const fileNames = files.map((file: string) => file);
-    console.log(fileNames);
     if (selectAll) {
       return await this.addPreviews(path, fileNames);
     }
@@ -93,11 +94,11 @@ export class FileSystemService {
       let preview;
       try {
         const buf = await this.fsPromises.readFile(`${folderPath}/${value}`);
-        const sharpImg = await this.bufImgResize(
+        const img = await this.bufImgResize(
           buf,
           DEFAULT_APP_OPTIONS.DEFAULT_PREVIEW_SIZE_PX
         );
-        preview = await this.bufToUrl(sharpImg);
+        preview = await this.bufToUrl(img);
       } catch (err) {
         this.notificationService.warning({
           title: `${NOTIFICATIONS.WARNING.PREVIEW.TITLE}${value}`,
@@ -115,22 +116,19 @@ export class FileSystemService {
   }
 
   async bufImgResize(buf: ArrayBuffer, height: number): Promise<ArrayBuffer> {
-    const tiffFile = this.dcraw(buf, { extractThumbnail: true });
-    return await this.sharp(tiffFile)
-      .resize(height)
-      .jpeg({ mozjpeg: true })
-      .toBuffer();
+    const blob = new Blob([this.dcraw(buf, { extractThumbnail: true })], {
+      type: 'image/jpeg',
+    });
+    const arrBuff = await blob.arrayBuffer();
+    const jimpImg = await this.jimp.read(arrBuff);
+    const jimpResized = await jimpImg.resize(this.jimp.AUTO, height);
+    return await jimpResized.getBufferAsync(this.jimp.MIME_JPEG);
   }
 
   async bufToUrl(buf: ArrayBuffer): Promise<SafeUrl> {
-    const sharpImg = await this.sharp(buf).jpeg({ mozjpeg: true }).toBuffer();
-    const stringChar = sharpImg.reduce((data: any, byte: any) => {
-      return data + String.fromCharCode(byte);
-    }, '');
-    const base64String = btoa(stringChar);
-    return this.sanitizer.bypassSecurityTrustUrl(
-      `data:image/jpg;base64, ` + base64String
-    );
+    const jimpImg = await this.jimp.read(buf);
+    const base64 = await jimpImg.getBase64Async(this.jimp.MIME_PNG);
+    return this.sanitizer.bypassSecurityTrustUrl(base64);
   }
 
   async processFiles(controller: State, files: IFile[]): Promise<boolean> {
@@ -147,7 +145,7 @@ export class FileSystemService {
       const convert = await this.fileWorker(
         folderPath,
         this.addTimestampPipe.transform(convertFolderName),
-        files.filter(file => file.preview),
+        files.filter((file) => file.preview),
         this.convertFile.bind(this)
       );
     }
