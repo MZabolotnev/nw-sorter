@@ -6,8 +6,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class AddTimestampPipe implements PipeTransform {
   transform(value: string): string {
     const date = new Date();
-    return `${value}_${date.getDate()}.${
+    return `${value} ${date.getDate()}.${
       date.getMonth() + 1
-    }.${date.getFullYear()}_${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}:${date.getMilliseconds()}`;
+    }.${date.getFullYear()}_${date.getHours()}_${date.getMinutes()}_${date.getSeconds()}_${date.getMilliseconds()}`;
   }
 }

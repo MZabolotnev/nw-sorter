@@ -155,7 +155,8 @@ export class FileSystemService {
 
       const sort = await this.fileWorker(
         folderPath,
-        this.addTimestampPipe.transform(sortFolderName),
+        // this.addTimestampPipe.transform(sortFolderName),
+        sortFolderName,
         files,
         this.copyFile.bind(this)
       );
